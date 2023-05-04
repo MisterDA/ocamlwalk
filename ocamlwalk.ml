@@ -42,14 +42,12 @@ let main () =
         as_callback = None;
       }
   in
-
   let rw_ops =
     Sdl.rw_from_file "ocaml_commercial_jingle.wav" "r" |> unwrap "rw_from_file"
   in
   let audio_spec, data =
     Sdl.load_wav_rw rw_ops audio_spec Bigarray.Float32 |> unwrap "load_wav_rw"
   in
-
   let id, _audio_spec =
     Sdl.open_audio_device None false audio_spec Sdl.Audio.allow_any_change
     |> unwrap "audio_device"
@@ -58,7 +56,6 @@ let main () =
   Sdl.queue_audio id data |> unwrap "queue audio";
   Sdl.pause_audio_device id false;
 
-  (* let start = Sdl.get_performance_counter () |> Int64.to_float in *)
   while Sdl.get_queued_audio_size id > 0 && !run do
     if Sdl.poll_event (Some event) && Sdl.Event.(get event typ = quit) then
       run := false;
@@ -70,11 +67,11 @@ let main () =
     if !i >= frames then i := 0;
     Sdl.render_present renderer;
     Sdl.delay 35l
-    (* let finish = Sdl.get_performance_counter () |> Int64.to_float in *)
-    (* let elapsed = (finish -. start) /. (Sdl.get_performance_frequency () |> Int64.to_float) in *)
-    (* if elapsed >= 8.0 then *)
-    (*   run := false *)
   done;
+
+  Tsdl_image.Image.quit ();
+  Sdl.destroy_window window;
+  Sdl.quit ();
 
   Array.set Sys.argv 0 "ocamlrun";
   let ocamlrun =
@@ -86,10 +83,6 @@ let main () =
     | _, Unix.WSIGNALED _ -> 1
     | _, Unix.WSTOPPED _ -> 1
   in
-
-  Tsdl_image.Image.quit ();
-  Sdl.destroy_window window;
-  Sdl.quit ();
   exit status
 
 let () = main ()
