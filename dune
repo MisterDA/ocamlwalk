@@ -1,0 +1,4 @@
+(executable
+ (public_name ocamlwalk)
+ (name ocamlwalk)
+ (libraries tsdl tsdl-image))
