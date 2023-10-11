@@ -13,8 +13,8 @@ let main () =
   let _tsdl_image = Tsdl_image.Image.(init Init.png) in
   let w = 240 and h = 200 in
   let window =
-    Sdl.create_window ~w ~h "SDL OpenGL" Sdl.Window.opengl
-    |> unwrap "Create window error"
+    let flags = Sdl.Window.(opengl + borderless + resizable + allow_highdpi) in
+    Sdl.create_window ~w ~h "SDL OpenGL" flags |> unwrap "Create window error"
   in
   Sdl.set_window_bordered window false;
   Sdl.set_window_title window "ocamlrun";
