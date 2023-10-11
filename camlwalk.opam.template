@@ -1,3 +1,0 @@
-pin-depends: [
-  ["tsdl-image.0.5-dev" "git+https://github.com/sanette/tsdl-image.git#b796890d7b63b3c3779e3c3a405dfcbde2804d7e"]
-]
